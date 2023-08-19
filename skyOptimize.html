@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Moon Data</title>
+</head>
+<body>
+    <h1>Moon Data</h1>
+    <p>Current Phase: {{ .CurPhase }}</p>
+    <p>Fraction Illuminated: {{ .FracIllum }}</p>
+    <h2>Moon Rise & Set</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Phenomenon</th>
+                <th>Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{ range .MoonData }}
+            <tr>
+                <td>{{ .Phen }}</td>
+                <td>{{ .Time }}</td>
+            </tr>
+            {{ end }}
+        </tbody>
+    </table>
+</body>
+</html>
