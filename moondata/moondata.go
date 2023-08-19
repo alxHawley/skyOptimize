@@ -25,6 +25,7 @@ type MoonData struct {
 	Type string `json:"type"`
 }
 
+// Function to get MoonData struct from API
 func GetMoonData(date string, lat string, long string, tz string, dst string) (MoonData, error) {
 	url := fmt.Sprintf("https://aa.usno.navy.mil/api/rstt/oneday?date=%s&coords=%s,%s&tz=%s&dst=%s", date, lat, long, tz, dst)
 	// Make HTTP request to get JSON response object

@@ -6,11 +6,13 @@ import (
 	"skyOptimize/moondata"
 )
 
+// Set up HTTP server
 func main() {
 	http.HandleFunc("/moondata", moonDataHandler)
 	http.ListenAndServe(":8080", nil)
 }
 
+// Handler function for /moondata route
 func moonDataHandler(w http.ResponseWriter, r *http.Request) {
 	date := "2022-08-16"
 	lat := "47.6062"
