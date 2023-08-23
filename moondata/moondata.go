@@ -15,11 +15,13 @@ type MoonData struct {
 	Properties struct {
 		Data struct {
 			CurPhase  string `json:"curphase"`
-			FracIllum string `json:"fracillum"`
+			Fracillum string `json:"fracillum"`
 			MoonData  []struct {
 				Phen string `json:"phen"`
 				Time string `json:"time"`
 			} `json:"moondata"`
+			RiseTime string `json:"riseTime"`
+			SetTime  string `json:"setTime"`
 		} `json:"data"`
 	} `json:"properties"`
 	Type string `json:"type"`
@@ -31,7 +33,8 @@ func GetMoonData(date string, lat string, long string, tz string, dst string) (M
 	// Make HTTP request to get JSON response object
 	resp, err := http.Get(url)
 	if err != nil {
-		// Handle error
+		// Display error message
+		fmt.Println("Error:[API]: Unable to fetch moon data at this time.", err)
 	}
 	defer resp.Body.Close()
 
@@ -39,14 +42,9 @@ func GetMoonData(date string, lat string, long string, tz string, dst string) (M
 	var moonData MoonData
 	err = json.NewDecoder(resp.Body).Decode(&moonData)
 	if err != nil {
-		// Handle error
+		// Display error message
+		fmt.Println("Error:[JSON decoder]: There was a problem decoding moon data.", err)
 	}
-
-	// Print out some fields from the MoonData struct
-	fmt.Println("Current Phase:", moonData.Properties.Data.CurPhase)
-	fmt.Println("Fraction Illuminated:", moonData.Properties.Data.FracIllum)
-	fmt.Println("Moon Rise Time:", moonData.Properties.Data.MoonData[0].Time)
-	fmt.Println("Moon Set Time:", moonData.Properties.Data.MoonData[2].Time)
 
 	return moonData, nil
 }

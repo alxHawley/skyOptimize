@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stargazing Conditions</title>
+</head>
+<body>
+    <h1>Stargazing Conditions for Your Date and Location</h1>
+    <h2>Moon Phase and Illumination</h1>       
+        {{range .MoonData}}
+        <p>Current Phase: {{.Properties.Data.CurPhase}}</p>
+        <p>Illumination: {{.Properties.Data.Fracillum}}</p>
+    {{end}}    
+    <p>Moonrise: {{.RiseTime}}</p>
+    <p>Moonset: {{.SetTime}}</p>
+    <h2>Current Weather</h2>
+    {{with index .WeatherData.Weather 0}}
+        <p>Predominant Condition: {{.Main}} <img src="https://openweathermap.org/img/w/{{.Icon}}.png" alt="Weather Icon"></p>
+{{end}}
+    <p>Low Temp: {{.WeatherData.Main.TempMin}}</p>
+    <p>High Temp: {{.WeatherData.Main.TempMax}}</p>
+    <p>Cloud Coverage: {{.WeatherData.Clouds.All}}%</p>
+
+    <div id="moon-weather-container"></div>
+
+    <script>
+        window.addEventListener('load', function() {
+            var form = document.getElementById('location-form');
+            var container = document.getElementById('moon-weather-container');
+
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', '/stargazer');
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.onload = function() {
+                    container.innerHTML = xhr.responseText;
+                };
+                xhr.send(new FormData(form));
+            });
+        });
+    </script>
+</body>
+</html>
